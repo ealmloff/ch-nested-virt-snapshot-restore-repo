@@ -9,7 +9,7 @@ cp /lib/modules/$k/kernel/{virt/lib/irqbypass,arch/x86/kvm/kvm,arch/x86/kvm/kvm-
 mv root/vmlinuz-$k root/vmlinuz
 (cd root && find . | cpio -o -H newc > ../initramfs)
 
-./cloud-hypervisor --api-socket api.sock --cpus boot=2,nested=on --memory size=2G \
+./cloud-hypervisor -v --api-socket api.sock --cpus boot=2,nested=on --memory size=2G \
     --kernel root/vmlinuz --initramfs initramfs \
     --cmdline "console=ttyS0 rdinit=/init" --serial tty --console off &
 sleep 6
@@ -17,4 +17,4 @@ sleep 6
 ./ch-remote --api-socket api.sock snapshot file://$PWD
 kill $!
 wait
-./cloud-hypervisor --restore source_url=file://$PWD,resume=true
+./cloud-hypervisor -v --restore source_url=file://$PWD,resume=true
